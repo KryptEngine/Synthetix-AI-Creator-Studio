@@ -898,6 +898,20 @@ app.use((req, res, next) => {
   next();
 });
 // ----------------------------------------
+
+import path from 'path';
+
+// Serve frontend assets
+app.use(express.static(path.resolve(process.cwd(), 'dist')));
+
+# Serve SPA React fallback for non-API routes
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api')) {
+    return next();
+  }
+  res.sendFile(path.resolve(process.cwd(), 'dist', 'index.html'));
+});
+
 app.listen(PORT, () => {
     console.log(`Synthetix AI Creator Studio Core API listening on port ${PORT}`);
     console.log(`Configured LLM providers: ${LLM_PROVIDERS.filter(providerHasKey).map((p) => p.name).join(', ') || 'none'}`);
