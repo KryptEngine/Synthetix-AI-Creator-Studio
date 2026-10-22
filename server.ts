@@ -58,7 +58,7 @@ app.use(
     }
   })
 );
-app.use('/assets', express.static(path.join(__dirname, 'src/assets/images')));
+
 
 // Broad backstop so a runaway client cannot hammer the API.
 app.use('/api', rateLimit({ windowMs: 60_000, max: 120, message: 'Too many requests. Slow down.' }));
