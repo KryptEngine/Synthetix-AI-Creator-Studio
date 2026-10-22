@@ -884,18 +884,13 @@ app.use(jsonErrorHandler);
 
 if (import.meta.url === `file://${process.argv[1]}`) {
   
+
 // Serve static files from the React app
 app.use(express.static(path.join(process.cwd(), 'dist')));
 
 // SPA fallback
-
-
-
-// Serve static files from the React app
-app.use(express.static(path.join(process.cwd(), 'dist')));
-
-// SPA fallback (Express 5 safe)
 app.use((req, res, next) => {
+  if (req.method === 'GET' && req.path.indexOf('/api') !== 0) {
     return res.sendFile(path.join(process.cwd(), 'dist', 'index.html'));
   }
   next();
