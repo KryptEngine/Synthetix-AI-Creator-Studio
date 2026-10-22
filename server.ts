@@ -888,17 +888,16 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 
 
 
-// Serve static files
-app.use(express.static(path.join(process.cwd(), 'dist')));
 
-// Express 5 safe SPA fallback
+// --- FINAL BULLETPROOF STATIC SERVING ---
+app.use(express.static('dist'));
 app.use((req, res, next) => {
   if (req.method === 'GET' && !req.path.startsWith('/api') && !req.path.includes('.')) {
-    return res.sendFile(path.join(process.cwd(), 'dist', 'index.html'));
+    return res.sendFile(process.cwd() + '/dist/index.html');
   }
   next();
 });
-
+// ----------------------------------------
 app.listen(PORT, () => {
     console.log(`Synthetix AI Creator Studio Core API listening on port ${PORT}`);
     console.log(`Configured LLM providers: ${LLM_PROVIDERS.filter(providerHasKey).map((p) => p.name).join(', ') || 'none'}`);

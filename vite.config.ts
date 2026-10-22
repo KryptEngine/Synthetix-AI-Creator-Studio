@@ -6,7 +6,7 @@ import { defineConfig } from 'vite';
 export default defineConfig(() => {
   return {
     plugins: [react(), tailwindcss()],
-    base: '/', // YEH SABSE ZAROORI LINE HAI
+    base: '/',
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('.', import.meta.url)),
