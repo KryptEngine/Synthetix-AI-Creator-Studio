@@ -885,7 +885,16 @@ if (process.env.NODE_ENV === 'production') {
 app.use(jsonErrorHandler);
 
 if (import.meta.url === `file://${process.argv[1]}`) {
-  app.listen(PORT, () => {
+  
+// Serve static files from the React app
+app.use(express.static(path.join(process.cwd(), 'dist')));
+
+// SPA fallback
+app.get('*', (req, res) => {
+  res.sendFile(path.join(process.cwd(), 'dist', 'index.html'));
+});
+
+app.listen(PORT, () => {
     console.log(`Synthetix AI Creator Studio Core API listening on port ${PORT}`);
     console.log(`Configured LLM providers: ${LLM_PROVIDERS.filter(providerHasKey).map((p) => p.name).join(', ') || 'none'}`);
   });
