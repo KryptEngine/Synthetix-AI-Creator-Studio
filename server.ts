@@ -876,9 +876,7 @@ app.use('/api', apiNotFound);
 if (process.env.NODE_ENV === 'production') {
   const distDir = path.join(__dirname, 'dist');
   app.use(express.static(distDir));
-  app.get('*', (req: Request, res: Response) => {
-    res.sendFile(path.join(distDir, 'index.html'));
-  });
+  
 }
 
 // Any error thrown inside a route must still answer with JSON.
@@ -890,8 +888,17 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 app.use(express.static(path.join(process.cwd(), 'dist')));
 
 // SPA fallback
-app.get('*', (req, res) => {
-  res.sendFile(path.join(process.cwd(), 'dist', 'index.html'));
+
+
+
+// Serve static files from the React app
+app.use(express.static(path.join(process.cwd(), 'dist')));
+
+// SPA fallback (Express 5 safe)
+app.use((req, res, next) => {
+    return res.sendFile(path.join(process.cwd(), 'dist', 'index.html'));
+  }
+  next();
 });
 
 app.listen(PORT, () => {
