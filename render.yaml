@@ -1,0 +1,61 @@
+# Render Blueprint — Synthetix AI Creator Studio
+# Apply with: Dashboard → New → Blueprint → select this repo.
+# Docs: https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: synthetix-ai-creator-studio
+    runtime: node
+    plan: starter          # disks need a paid plan; the free tier has no persistent disk
+    region: singapore
+    branch: main
+
+    # devDependencies are required for the Vite build (vite/tailwind live there),
+    # so --include=dev is pinned explicitly instead of relying on NODE_ENV.
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: 22.19.0
+      # Persistent storage — must match the disk mountPath below.
+      - key: DATA_DIR
+        value: /opt/render/project/src/.data
+      - key: HTTPS
+        value: "on"          # Secure flag on session cookies + HSTS
+      - key: COOKIE_SECURE
+        value: "on"
+
+      # Set these in the dashboard after the first deploy.
+      - key: ENCRYPTION_MASTER_KEY
+        sync: false          # 64 hex chars: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: ADMIN_NAME
+        sync: false
+      - key: APP_URL
+        sync: false          # https://<your-service>.onrender.com
+      - key: CORS_ORIGINS
+        sync: false          # https://<your-service>.onrender.com
+
+      # Payments (optional — the marketplace reports "not configured" without them).
+      - key: RAZORPAY_KEY_ID
+        sync: false
+      - key: RAZORPAY_KEY_SECRET
+        sync: false
+      - key: RAZORPAY_WEBHOOK_SECRET
+        sync: false
+      - key: RAZORPAY_PAYOUT_ACCOUNT_ID
+        sync: false
+
+    # Persistent disk for .data/ (users, sessions, encrypted provider keys, studio state).
+    disk:
+      name: studiodata
+      mountPath: /opt/render/project/src/.data
+      sizeGB: 1

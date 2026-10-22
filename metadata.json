@@ -1,0 +1,6 @@
+{
+  "name": "Synthetix AI — AI Creator Studio",
+  "description": "Production-grade AI Creator Studio with multi-track timeline video editor, automated script generation, super admin telemetry with dynamic API key rotation, content calendar, and double-entry creator wallet.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

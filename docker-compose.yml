@@ -1,0 +1,32 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: synthetix_creator_studio
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - APP_URL=${APP_URL:-http://localhost:3001}
+      # Generate with: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+      - ENCRYPTION_MASTER_KEY=${ENCRYPTION_MASTER_KEY:?set ENCRYPTION_MASTER_KEY in .env}
+      - ADMIN_EMAIL=${ADMIN_EMAIL:-admin@synthetix.ai}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:?set ADMIN_PASSWORD in .env}
+      - ADMIN_NAME=${ADMIN_NAME:-Alex Reed (Synthetix)}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - GROQ_API_KEY=${GROQ_API_KEY:-}
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY:-}
+      - RAZORPAY_KEY_ID=${RAZORPAY_KEY_ID:-}
+      - RAZORPAY_KEY_SECRET=${RAZORPAY_KEY_SECRET:-}
+      - RAZORPAY_WEBHOOK_SECRET=${RAZORPAY_WEBHOOK_SECRET:-}
+      - RAZORPAY_PAYOUT_ACCOUNT_ID=${RAZORPAY_PAYOUT_ACCOUNT_ID:-}
+      - CORS_ORIGINS=${CORS_ORIGINS:-}
+    volumes:
+      # Encrypted provider keys, users, sessions and the studio dataset.
+      - studiodata:/app/.data
+
+volumes:
+  studiodata:

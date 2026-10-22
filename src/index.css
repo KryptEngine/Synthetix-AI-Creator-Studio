@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@layer base {
+  * {
+    border-color: #202B40;
+  }
+  body {
+    background-color: #080F20;
+    color: #F7F9FF;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* Custom scrollbars for timeline and studio */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0d1527;
+}
+::-webkit-scrollbar-thumb {
+  background: #202B40;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2e3e5c;
+}
+
+.shadow-neon-cyan {
+  box-shadow: 0 0 20px -3px rgba(21, 221, 245, 0.35);
+}
+
+.shadow-neon-purple {
+  box-shadow: 0 0 25px -4px rgba(161, 61, 255, 0.40);
+}
+
+.font-mono-tabular {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+}
